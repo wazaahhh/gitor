@@ -1,8 +1,12 @@
 from django.http import HttpResponse,StreamingHttpResponse
 from django.shortcuts import render
 from github import Github
+from django.template.context import RequestContext
+from django.shortcuts import render_to_response
 
-import urllib, urllib2
+
+
+import urllib, urllib2,json
 
 
 
@@ -26,7 +30,9 @@ def auth(request):
 	return HttpResponse(the_page)
 
 def easy(request):
+	print(request.method)
 	if request.method == 'POST':
+		stack=[]
 		try:
 			pseudo=request.POST.get('your_user')
 			password=request.POST.get('your_password')		
@@ -43,8 +49,10 @@ def easy(request):
 			pass
 
 		if stack.count > 0:
-			return HttpResponse(stack)
+			context = RequestContext(request,{'request': request,'repos':stack,'error':False})
 		else:
-			return HttpResponse('non')
+			context = RequestContext(request,{'request': request,'repos':'test','error':True})
 	else:
-		return HttpResponse('entrez vos credentials')
+		context = RequestContext(request,{'request': request,'repos':'test','error':True})
+
+	return render_to_response('index2.html',context_instance=context)
