@@ -55,3 +55,4 @@ docs/_build/
 venv
 *.pyc
 staticfiles
+credentials.py
