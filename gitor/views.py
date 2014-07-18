@@ -30,7 +30,6 @@ def auth(request):
 	return HttpResponse(the_page)
 
 def easy(request):
-	print(request.method)
 	if request.method == 'POST':
 		stack=[]
 		try:
